@@ -12,7 +12,7 @@ const userSchema = new Schema(
     phone: { type: String, require: true, unique: true },
     role: { type: String, enum: ERole, default: "user" },
     category: { type: String, require: false },
-    status: { type: String, enum: EStatus, default: "active" },
+    status: { type: String, enum: EStatus, default: "inactive" },
   },
   {
     timestamps: true,
