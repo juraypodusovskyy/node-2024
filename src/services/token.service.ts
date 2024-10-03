@@ -7,33 +7,52 @@ import { IPayload, ITokenPair } from "../interfaces/token.interface";
 
 class TokenService {
   public generateTokens(payload: IPayload): ITokenPair {
-    const accessToken = jsonwebtoken.sign(payload, configs.JWT_ACCESS_SECRET, {
-      expiresIn: configs.JWT_ACCESS_EXPIRATION,
-    });
-    const refreshToken = jsonwebtoken.sign(
-      payload,
-      configs.JWT_REFRESH_SECRET,
-      {
-        expiresIn: configs.JWT_ACCESS_EXPIRATION,
-      },
-    );
+    const accessToken = this.generateToken(payload, ETokenType.ACCESS);
+    const refreshToken = this.generateToken(payload, ETokenType.REFRESH);
+
     return { accessToken, refreshToken };
   }
 
+  public generateToken(payload: IPayload, tokenType: ETokenType): string {
+    const { secret, expiration } = this.getTokenConfig(tokenType);
+
+    return jsonwebtoken.sign(payload, secret, {
+      expiresIn: expiration,
+    });
+  }
+
   public verifyToken(token: string, tokenType: ETokenType): IPayload {
-    let secret: string;
+    const { secret } = this.getTokenConfig(tokenType);
+
     try {
-      switch (tokenType) {
-        case ETokenType.ACCESS:
-          secret = configs.JWT_ACCESS_SECRET;
-          break;
-        case ETokenType.REFRESH:
-          secret = configs.JWT_REFRESH_SECRET;
-          break;
-      }
       return jsonwebtoken.verify(token, secret) as IPayload;
     } catch {
       throw new ApiError(401, "Invalid token");
+    }
+  }
+
+  private getTokenConfig(tokenType: ETokenType): {
+    secret: string;
+    expiration: string;
+  } {
+    switch (tokenType) {
+      case ETokenType.ACCESS:
+        return {
+          secret: configs.JWT_ACCESS_SECRET,
+          expiration: configs.JWT_ACCESS_EXPIRATION,
+        };
+      case ETokenType.REFRESH:
+        return {
+          secret: configs.JWT_REFRESH_SECRET,
+          expiration: configs.JWT_REFRESH_EXPIRATION,
+        };
+      case ETokenType.ACTIVATE:
+        return {
+          secret: configs.JWT_ACTIVATE_SECRET,
+          expiration: configs.JWT_ACTIVATE_EXPIRATION,
+        };
+      default:
+        throw new ApiError(400, "Invalid token type");
     }
   }
 }

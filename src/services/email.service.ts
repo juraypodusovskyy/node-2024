@@ -32,15 +32,17 @@ class EmailService {
     this.transporter.use("compile", HbsTransporter(hbsOptional));
   }
 
-  public async sendEmail(
+  public async sendEmail<T extends EEmailType>(
     to: string,
-    emailType: EEmailType,
-    context: IEmailContext,
+    emailType: T,
+    context: IEmailContext<T>,
   ): Promise<void> {
     const emailOptions = emailConstant[emailType];
+    const frontUrl = context.frontUrl || configs.FRONT_URL;
+
     const options = {
       ...emailOptions,
-      context,
+      context: { ...context, frontUrl },
       to,
       from: configs.SMTP_EMAIL,
     };

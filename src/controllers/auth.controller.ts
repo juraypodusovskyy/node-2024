@@ -3,9 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { IPayload } from "../interfaces/token.interface";
 import { ILogUser, IUser } from "../interfaces/user.interface";
 import { tokenRepositori } from "../repositories/token.repositories";
-import { userRepository } from "../repositories/user.repository";
 import { authService } from "../services/auth.service";
-import { passwordService } from "../services/password.service";
 
 class AuthControler {
   public async login(req: Request, res: Response, next: NextFunction) {
@@ -22,11 +20,7 @@ class AuthControler {
   public async register(req: Request, res: Response, next: NextFunction) {
     try {
       const user = req.body as IUser;
-      const hashPassword = await passwordService.hashPassword(user.password);
-      const newUser = await userRepository.create({
-        ...user,
-        password: hashPassword,
-      });
+      const newUser = await authService.register(user);
       res.status(201).send(newUser);
     } catch (e) {
       next(e);

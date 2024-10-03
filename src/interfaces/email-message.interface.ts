@@ -1,19 +1,26 @@
-interface IBaseEmailWithName {
-  name: string;
-  frontUrl: string;
-}
+import { EEmailType } from "../enums/email.enum";
 
-interface IBaseEmailWithToken {
-  frontUrl: string;
+interface IWelcomeContext {
+  name: string;
+  frontUrl?: string;
   actionToken: string;
 }
 
-interface IWelcome extends IBaseEmailWithName, IBaseEmailWithToken {}
+interface IOldVisitContext {
+  name: string;
+  frontUrl?: string;
+}
 
-type IOldVisit = IBaseEmailWithName;
+interface IForgotPasswordContext {
+  frontUrl?: string;
+  actionToken: string;
+}
 
-type ILogout = IOldVisit;
+type EmailContextMapping = {
+  [EEmailType.WELCOME]: IWelcomeContext;
+  [EEmailType.OLD_VISIT]: IOldVisitContext;
+  [EEmailType.LOGOUT]: IOldVisitContext;
+  [EEmailType.FORGOT_PASSWORD]: IForgotPasswordContext;
+};
 
-type IForgotPassword = IBaseEmailWithToken;
-
-export type IEmailContext = IWelcome | IOldVisit | ILogout | IForgotPassword;
+export type IEmailContext<T extends EEmailType> = EmailContextMapping[T];
