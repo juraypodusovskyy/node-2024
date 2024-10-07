@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { IPayload } from "../interfaces/token.interface";
 import { ILogUser, IUser } from "../interfaces/user.interface";
-import { tokenRepositori } from "../repositories/token.repositories";
+import { tokenRepository } from "../repositories/token.repositories";
 import { authService } from "../services/auth.service";
 
 class AuthControler {
@@ -10,8 +10,8 @@ class AuthControler {
     try {
       const logUser = req.body as ILogUser;
       const { tokens, user } = await authService.login(logUser);
-      await tokenRepositori.delte({ _userId: user._id });
-      const tokenPair = await tokenRepositori.create(tokens, user._id);
+      await tokenRepository.delte({ _userId: user._id });
+      const tokenPair = await tokenRepository.create(tokens, user._id);
       res.status(201).send(tokenPair);
     } catch (e) {
       next(e);
@@ -31,6 +31,16 @@ class AuthControler {
       const payload = req.res.locals.jwtPayload as IPayload;
       const { accessToken, refreshToken } = await authService.refresh(payload);
       res.status(201).send({ access: accessToken, refresh: refreshToken });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async activate(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { userId } = req.res.locals.activateToken as IPayload;
+      await authService.activate(userId);
+      res.sendStatus(204);
     } catch (e) {
       next(e);
     }

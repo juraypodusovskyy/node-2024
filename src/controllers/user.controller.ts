@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { IPayload } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
-import { tokenRepositori } from "../repositories/token.repositories";
+import { tokenRepository } from "../repositories/token.repositories";
 import { userRepository } from "../repositories/user.repository";
 
 class UserControllers {
@@ -39,7 +39,7 @@ class UserControllers {
     try {
       const { userId } = req.res.locals.jwtPayload as IPayload;
       await userRepository.delete(userId);
-      await tokenRepositori.delte({ _userId: userId });
+      await tokenRepository.delte({ _userId: userId });
       res.sendStatus(204);
     } catch (e) {
       next(e);

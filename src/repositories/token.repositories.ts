@@ -1,7 +1,7 @@
 import { IToken, ITokenPair } from "../interfaces/token.interface";
 import { Token } from "../models/token.model";
 
-class TokenRepositori {
+class TokenRepository {
   public async create(
     tokens: ITokenPair,
     _userId: string,
@@ -20,4 +20,4 @@ class TokenRepositori {
   }
 }
 
-export const tokenRepositori = new TokenRepositori();
+export const tokenRepository = new TokenRepository();

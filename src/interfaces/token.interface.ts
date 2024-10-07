@@ -17,4 +17,10 @@ interface IPayload {
   role: ERole;
 }
 
-export type { IToken, ITokenPair, IPayload };
+interface IActivateToken {
+  activateToken: string;
+  _id?: string;
+  _userId: string;
+}
+
+export type { IToken, ITokenPair, IPayload, IActivateToken };

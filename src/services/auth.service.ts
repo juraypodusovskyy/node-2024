@@ -1,9 +1,11 @@
 import { EEmailType } from "../enums/email.enum";
+import { EStatus } from "../enums/status.enum";
 import { ETokenType } from "../enums/tokens.enum";
 import { ApiError } from "../errors/api-error";
 import { IPayload, ITokenPair } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
-import { tokenRepositori } from "../repositories/token.repositories";
+import { activateTokenRepository } from "../repositories/activate-token.repositories";
+import { tokenRepository } from "../repositories/token.repositories";
 import { userRepository } from "../repositories/user.repository";
 import { emailService } from "./email.service";
 import { passwordService } from "./password.service";
@@ -38,9 +40,9 @@ class AuthService {
   }
 
   public async refresh({ role, userId }: IPayload): Promise<ITokenPair> {
-    await tokenRepositori.delte({ _userId: userId });
+    await tokenRepository.delte({ _userId: userId });
     const tokens = tokenService.generateTokens({ role, userId });
-    return await tokenRepositori.create(tokens, userId);
+    return await tokenRepository.create(tokens, userId);
   }
 
   public async register(user: IUser): Promise<IUser> {
@@ -49,7 +51,7 @@ class AuthService {
       ...user,
       password: hashPassword,
     });
-    const actionToken = tokenService.generateToken(
+    const newToken = tokenService.generateToken(
       {
         role: newUser.role,
         userId: newUser._id,
@@ -57,11 +59,20 @@ class AuthService {
       ETokenType.ACTIVATE,
     );
 
+    const { activateToken } = await activateTokenRepository.create({
+      activateToken: newToken,
+      _userId: newUser._id,
+    });
+
     emailService.sendEmail(newUser.email, EEmailType.WELCOME, {
-      actionToken,
+      actionToken: activateToken,
       name: newUser.name,
     });
     return newUser;
+  }
+  public async activate(userId: string): Promise<void> {
+    await userRepository.update({ status: EStatus.ACTIVE }, userId);
+    await activateTokenRepository.delete(userId);
   }
 }
 

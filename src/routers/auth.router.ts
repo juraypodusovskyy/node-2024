@@ -28,4 +28,10 @@ router.post(
   authControler.refresh,
 );
 
+router.patch(
+  "/activate",
+  authMiddleware.checkActivateToken,
+  authControler.activate,
+);
+
 export const authRouter = router;
