@@ -1,19 +1,17 @@
-import { IActivateToken } from "../interfaces/token.interface";
-import { ActivateToken } from "../models/activate-token";
+import { IActiveToken } from "../interfaces/token.interface";
+import { ActiveToken } from "../models/active-token";
 
 class ActivateTokenRepository {
-  public async create(activateToken: IActivateToken): Promise<IActivateToken> {
-    return await ActivateToken.create(activateToken);
+  public async create(activeToken: IActiveToken): Promise<IActiveToken> {
+    return await ActiveToken.create(activeToken);
   }
 
-  public async findByParams(
-    dto: Partial<IActivateToken>,
-  ): Promise<IActivateToken> {
-    return await ActivateToken.findOne(dto);
+  public async findByParams(dto: Partial<IActiveToken>): Promise<IActiveToken> {
+    return await ActiveToken.findOne(dto);
   }
 
   public async delete(userId: string): Promise<void> {
-    await ActivateToken.deleteMany({ _userId: userId });
+    await ActiveToken.deleteMany({ _userId: userId });
   }
 }
 

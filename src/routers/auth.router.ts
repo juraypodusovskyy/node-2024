@@ -30,7 +30,7 @@ router.post(
 
 router.patch(
   "/activate",
-  authMiddleware.checkActivateToken,
+  authMiddleware.checkActiveToken(ETokenType.ACTIVATE),
   authControler.activate,
 );
 

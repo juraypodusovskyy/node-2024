@@ -59,13 +59,13 @@ class AuthService {
       ETokenType.ACTIVATE,
     );
 
-    const { activateToken } = await activateTokenRepository.create({
-      activateToken: newToken,
+    const { activeToken } = await activateTokenRepository.create({
+      activeToken: newToken,
       _userId: newUser._id,
     });
 
     emailService.sendEmail(newUser.email, EEmailType.WELCOME, {
-      actionToken: activateToken,
+      actionToken: activeToken,
       name: newUser.name,
     });
     return newUser;
