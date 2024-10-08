@@ -1,5 +1,15 @@
 import * as bcrypt from "bcrypt";
 
+import { EEmailType } from "../enums/email.enum";
+import { ETokenType } from "../enums/tokens.enum";
+import { IPayload } from "../interfaces/token.interface";
+import { IUser } from "../interfaces/user.interface";
+import { activeTokenRepository } from "../repositories/active-token.repositories";
+import { tokenRepository } from "../repositories/token.repositories";
+import { userRepository } from "../repositories/user.repository";
+import { emailService } from "./email.service";
+import { tokenService } from "./token.service";
+
 class PasswordService {
   async hashPassword(password: string): Promise<string> {
     return await bcrypt.hash(password, 10);
@@ -10,6 +20,27 @@ class PasswordService {
   ): Promise<boolean> {
     return await bcrypt.compare(password, hashPassword);
   }
+
+  async forgotPasswordSendEmail({ _id, role, email }: IUser): Promise<void> {
+    const activeToken = tokenService.generateToken(
+      { role, userId: _id },
+      ETokenType.FORGOT,
+    );
+    await Promise.all([
+      activeTokenRepository.create({ activeToken, _userId: _id }),
+      emailService.sendEmail(email, EEmailType.FORGOT_PASSWORD, {
+        actionToken: activeToken,
+      }),
+    ]);
+  }
+  public forgotPassword = async ({ userId }: IPayload, newPassword: string) => {
+    const password = await this.hashPassword(newPassword);
+    await Promise.all([
+      userRepository.update({ password }, userId),
+      activeTokenRepository.delete(userId),
+      tokenRepository.delte({ _userId: userId }),
+    ]);
+  };
 }
 
 export const passwordService = new PasswordService();

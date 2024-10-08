@@ -5,9 +5,9 @@ import { IUser } from "../interfaces/user.interface";
 import { userRepository } from "../repositories/user.repository";
 
 class UserMiddleware {
-  private getUserByEmail = async (email: string): Promise<IUser | null> => {
+  private async checkUserByEmail(email: string): Promise<IUser | null> {
     return await userRepository.getByEmail(email);
-  };
+  }
 
   public isEmailExistOrThrow = async (
     req: Request,
@@ -16,15 +16,34 @@ class UserMiddleware {
   ): Promise<void> => {
     try {
       const { email } = req.body as IUser;
-      const user = await this.getUserByEmail(email);
+      const user = await this.checkUserByEmail(email);
 
       if (user) {
-        throw new ApiError(409, "Email already exists");
+        return next(new ApiError(409, "Email already exists"));
       }
 
       next();
-    } catch (e) {
-      next(e);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public isEmailExist = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const { email } = req.body as IUser;
+      const user = await this.checkUserByEmail(email);
+
+      if (!user) {
+        return next(new ApiError(409, "Email does not exist"));
+      }
+      req.res.locals.user = user;
+      next();
+    } catch (error) {
+      next(error);
     }
   };
 }

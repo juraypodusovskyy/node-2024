@@ -51,6 +51,11 @@ class TokenService {
           secret: configs.JWT_ACTIVATE_SECRET,
           expiration: configs.JWT_ACTIVATE_EXPIRATION,
         };
+      case ETokenType.FORGOT:
+        return {
+          secret: configs.JWT_FORGOT_SECRET,
+          expiration: configs.JWT_FORGOT_EXPIRATION,
+        };
       default:
         throw new ApiError(400, "Invalid token type");
     }

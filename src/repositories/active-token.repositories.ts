@@ -1,7 +1,7 @@
 import { IActiveToken } from "../interfaces/token.interface";
 import { ActiveToken } from "../models/active-token";
 
-class ActivateTokenRepository {
+class ActiveTokenRepository {
   public async create(activeToken: IActiveToken): Promise<IActiveToken> {
     return await ActiveToken.create(activeToken);
   }
@@ -15,4 +15,4 @@ class ActivateTokenRepository {
   }
 }
 
-export const activateTokenRepository = new ActivateTokenRepository();
+export const activeTokenRepository = new ActiveTokenRepository();

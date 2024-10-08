@@ -4,7 +4,8 @@ import mongoose from "mongoose";
 import { configs } from "./configs/configs";
 import { ApiError } from "./errors/api-error";
 import { authRouter } from "./routers/auth.router";
-import { userRouters } from "./routers/userRouters";
+import { passwordRouter } from "./routers/password.router";
+import { userRouters } from "./routers/user.router";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/users", userRouters);
 app.use("/auth", authRouter);
+app.use("/password", passwordRouter);
 
 app.use(
   "*",

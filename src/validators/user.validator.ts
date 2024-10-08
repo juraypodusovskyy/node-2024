@@ -6,6 +6,7 @@ import { regexConstant } from "../constants/regex.constant";
 
 export class UserValidator {
   private static name = joi.string().min(3).max(20).trim();
+  private static activeToken = joi.string().trim();
   private static email = joi
     .string()
     .trim()
@@ -39,6 +40,19 @@ export class UserValidator {
 
   public static login = joi.object({
     email: this.email.required(),
+    password: this.password.required(),
+  });
+
+  public static isActiveTokenValid = joi.object({
+    activeToken: this.activeToken.required(),
+  });
+
+  public static isEmailValid = joi.object({
+    email: this.email.required(),
+  });
+
+  public static forgot = joi.object({
+    activeToken: this.activeToken.required(),
     password: this.password.required(),
   });
 }

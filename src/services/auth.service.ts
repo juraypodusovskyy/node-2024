@@ -4,7 +4,7 @@ import { ETokenType } from "../enums/tokens.enum";
 import { ApiError } from "../errors/api-error";
 import { IPayload, ITokenPair } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
-import { activateTokenRepository } from "../repositories/activate-token.repositories";
+import { activeTokenRepository } from "../repositories/active-token.repositories";
 import { tokenRepository } from "../repositories/token.repositories";
 import { userRepository } from "../repositories/user.repository";
 import { emailService } from "./email.service";
@@ -59,7 +59,7 @@ class AuthService {
       ETokenType.ACTIVATE,
     );
 
-    const { activeToken } = await activateTokenRepository.create({
+    const { activeToken } = await activeTokenRepository.create({
       activeToken: newToken,
       _userId: newUser._id,
     });
@@ -72,7 +72,7 @@ class AuthService {
   }
   public async activate(userId: string): Promise<void> {
     await userRepository.update({ status: EStatus.ACTIVE }, userId);
-    await activateTokenRepository.delete(userId);
+    await activeTokenRepository.delete(userId);
   }
 }
 

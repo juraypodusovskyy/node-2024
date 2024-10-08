@@ -38,7 +38,7 @@ class AuthControler {
 
   public async activate(req: Request, res: Response, next: NextFunction) {
     try {
-      const { userId } = req.res.locals.activateToken as IPayload;
+      const { userId } = req.res.locals.jwtPayload as IPayload;
       await authService.activate(userId);
       res.sendStatus(204);
     } catch (e) {

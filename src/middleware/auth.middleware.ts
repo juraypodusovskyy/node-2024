@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { ETokenType } from "../enums/tokens.enum";
 import { ApiError } from "../errors/api-error";
-import { activateTokenRepository } from "../repositories/activate-token.repositories";
+import { activeTokenRepository } from "../repositories/active-token.repositories";
 import { tokenRepository } from "../repositories/token.repositories";
 import { tokenService } from "../services/token.service";
 
@@ -50,7 +50,7 @@ class AuthMiddleware {
         const token = this._getToken(req, "body");
         const payload = tokenService.verifyToken(token, tokenType);
 
-        const findToken = await activateTokenRepository.findByParams({
+        const findToken = await activeTokenRepository.findByParams({
           _userId: payload.userId,
           activeToken: token,
         });
@@ -59,7 +59,7 @@ class AuthMiddleware {
           throw new ApiError(401, `${tokenType} token is not valid`);
         }
 
-        req.res.locals.activateToken = payload;
+        req.res.locals.jwtPayload = payload;
         next();
       } catch (e) {
         next(e);
