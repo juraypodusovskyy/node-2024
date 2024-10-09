@@ -22,4 +22,12 @@ router.patch(
   authMiddleware.checkActiveToken(ETokenType.FORGOT),
   passwordcontroller.forgotPassword,
 );
+
+router.patch(
+  "/change-password",
+  authMiddleware.checkToken(ETokenType.ACCESS),
+  commonMiddleware.isBodyValid(UserValidator.changePassword),
+  passwordcontroller.changePassword,
+);
+
 export const passwordRouter = router;

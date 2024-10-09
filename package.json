@@ -12,6 +12,8 @@
   },
   "private": true,
   "dependencies": {
+    "express-fileupload": "^1.5.1",
+    "@aws-sdk/client-s3": "^3.662.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "joi": "^17.13.3",
@@ -22,6 +24,7 @@
     "nodemailer-express-handlebars": "^6.1.2"
   },
   "devDependencies": {
+    "@types/express-fileupload": "^1.5.1",
     "@types/express": "^4.17.21",
     "@types/node": "^22.5.4",
     "@typescript-eslint/eslint-plugin": "^8.5.0",

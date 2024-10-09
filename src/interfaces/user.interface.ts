@@ -19,4 +19,9 @@ interface ILogUser {
   password: string;
 }
 
-export type { IUser, ILogUser };
+interface ICngPassword {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export type { IUser, ILogUser, ICngPassword };
