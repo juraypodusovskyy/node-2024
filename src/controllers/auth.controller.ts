@@ -45,6 +45,16 @@ class AuthControler {
       next(e);
     }
   }
+
+  public async logout(req: Request, res: Response, next: NextFunction) {
+    try {
+      const payload = req.res.locals.jwtPayload as IPayload;
+      await authService.logout(payload);
+      res.sendStatus(204);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export const authControler = new AuthControler();

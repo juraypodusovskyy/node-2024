@@ -28,6 +28,12 @@ router.post(
   authControler.refresh,
 );
 
+router.post(
+  "/logout",
+  authMiddleware.checkToken(ETokenType.ACCESS),
+  authControler.logout,
+);
+
 router.patch(
   "/activate",
   commonMiddleware.isBodyValid(UserValidator.isActiveTokenValid),

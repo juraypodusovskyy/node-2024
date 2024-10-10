@@ -74,6 +74,10 @@ class AuthService {
     await userRepository.update({ status: EStatus.ACTIVE }, userId);
     await activeTokenRepository.delete(userId);
   }
+
+  public async logout({ userId }: IPayload): Promise<void> {
+    await tokenRepository.delte({ _userId: userId });
+  }
 }
 
 export const authService = new AuthService();
