@@ -35,7 +35,6 @@ class AuthControler {
       next(e);
     }
   }
-
   public async activate(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId } = req.res.locals.jwtPayload as IPayload;

@@ -4,6 +4,7 @@ import { usercontrollers } from "../controllers/user.controller";
 import { ETokenType } from "../enums/tokens.enum";
 import { authMiddleware } from "../middleware/auth.middleware";
 import { commonMiddleware } from "../middleware/common.middleware";
+import { filemiddleware } from "../middleware/file.middleware";
 import { UserValidator } from "../validators/user.validator";
 
 const router = Router();
@@ -30,6 +31,12 @@ router.delete(
   "/me",
   authMiddleware.checkToken(ETokenType.ACCESS),
   usercontrollers.delete,
+);
+router.patch(
+  "/avatar",
+  authMiddleware.checkToken(ETokenType.ACCESS),
+  filemiddleware.isFileValid,
+  usercontrollers.uploadAvatar,
 );
 
 export const userRouters = router;
