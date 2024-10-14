@@ -12,6 +12,7 @@ interface IUser {
   status?: EStatus;
   createdAt: Date;
   updatedAt: Date;
+  avatar: string | null;
 }
 
 interface ILogUser {

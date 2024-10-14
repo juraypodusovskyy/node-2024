@@ -13,6 +13,7 @@ const userSchema = new Schema(
     role: { type: String, enum: ERole, default: "user" },
     category: { type: String, require: false },
     status: { type: String, enum: EStatus, default: "inactive" },
+    avatar: { type: String, default: null },
   },
   {
     timestamps: true,

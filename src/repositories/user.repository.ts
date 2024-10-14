@@ -14,7 +14,7 @@ class UserRepository {
   public async getList(): Promise<IUser[]> {
     return await User.find({});
   }
-  public async getById(userId): Promise<IUser> {
+  public async getById(userId: string): Promise<IUser> {
     return await User.findById(userId).select("+password");
   }
   public async getByEmail(email: string): Promise<IUser> {
