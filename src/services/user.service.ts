@@ -2,6 +2,7 @@ import { UploadedFile } from "express-fileupload";
 
 import { EFileType } from "../enums/file-item-type.enum";
 import { IUser } from "../interfaces/user.interface";
+import { activeTokenRepository } from "../repositories/active-token.repositories";
 import { tokenRepository } from "../repositories/token.repositories";
 import { userRepository } from "../repositories/user.repository";
 import { s3service } from "./s3.service";
@@ -20,13 +21,17 @@ class UserService {
     await Promise.all([
       userRepository.delete(userId),
       tokenRepository.delte({ _userId: userId }),
-      userRepository.delete(userId),
+      activeTokenRepository.delete(userId),
     ]);
   }
   public async uploadAvatar(
     userId: string,
     file: UploadedFile,
   ): Promise<IUser> {
+    const { avatar } = await userRepository.getById(userId);
+    if (avatar) {
+      await s3service.deleteFile(avatar);
+    }
     const filePath = await s3service.uploadFile(file, EFileType.USERS, userId);
     return await userRepository.update({ avatar: filePath }, userId);
   }

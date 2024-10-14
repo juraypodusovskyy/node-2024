@@ -1,4 +1,8 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+  DeleteObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
 import { UploadedFile } from "express-fileupload";
 import path from "path";
@@ -38,6 +42,18 @@ class S3service {
       return filePath;
     } catch (error) {
       console.error("Error upload", error);
+    }
+  }
+  public async deleteFile(filePath: string): Promise<void> {
+    try {
+      await this.s3Client.send(
+        new DeleteObjectCommand({
+          Key: filePath,
+          Bucket: configs.AWS_S3_BUCKET_NAME,
+        }),
+      );
+    } catch (error) {
+      console.error(`Error deleting file: ${filePath}`, error);
     }
   }
 }
