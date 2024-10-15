@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { usercontrollers } from "../controllers/user.controller";
+import { EFileType } from "../enums/file-item-type.enum";
 import { ETokenType } from "../enums/tokens.enum";
 import { authMiddleware } from "../middleware/auth.middleware";
 import { commonMiddleware } from "../middleware/common.middleware";
@@ -35,7 +36,7 @@ router.delete(
 router.patch(
   "/avatar",
   authMiddleware.checkToken(ETokenType.ACCESS),
-  filemiddleware.isFileValid,
+  filemiddleware.isFileValid(EFileType.USERS),
   usercontrollers.uploadAvatar,
 );
 

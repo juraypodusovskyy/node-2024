@@ -15,6 +15,17 @@ interface IUser {
   avatar: string | null;
 }
 
+interface IUserPublicResDto {
+  _id: string;
+  email: string;
+  name: string;
+  phone: string;
+  status: EStatus;
+  category: string;
+  role: ERole;
+  avatar: string | null;
+}
+
 interface ILogUser {
   email: string;
   password: string;
@@ -25,4 +36,4 @@ interface ICngPassword {
   newPassword: string;
 }
 
-export type { IUser, ILogUser, ICngPassword };
+export type { IUser, ILogUser, ICngPassword, IUserPublicResDto };

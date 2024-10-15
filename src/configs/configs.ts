@@ -30,4 +30,5 @@ export const configs = {
   AWS_SECRET_KEY: process.env.AWS_SECRET_KEY,
   AWS_S3_REGION: process.env.AWS_S3_REGION,
   AWS_S3_ACL: process.env.AWS_S3_ACL as ObjectCannedACL,
+  AWS_S3_ENDPOINT: process.env.AWS_S3_ENDPOINT,
 };

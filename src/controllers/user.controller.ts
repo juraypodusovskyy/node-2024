@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { UploadedFile } from "express-fileupload";
 
+import { EFileType } from "../enums/file-item-type.enum";
 import { IPayload } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
 import { userService } from "../services/user.service";
@@ -47,7 +48,7 @@ class UserControllers {
   public async uploadAvatar(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId } = req.res.locals.jwtPayload as IPayload;
-      const file = req.files.avatar as UploadedFile;
+      const file = req.files[EFileType.USERS] as UploadedFile;
       const user = await userService.uploadAvatar(userId, file);
       res.status(201).send(user);
     } catch (e) {
