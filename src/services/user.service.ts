@@ -1,7 +1,11 @@
 import { UploadedFile } from "express-fileupload";
 
 import { EFileType } from "../enums/file-item-type.enum";
-import { IUser, IUserPublicResDto } from "../interfaces/user.interface";
+import {
+  IUser,
+  IUserPublicResDto,
+  IUserQuery,
+} from "../interfaces/user.interface";
 import { userPresent } from "../presenters/user.presenters";
 import { activeTokenRepository } from "../repositories/active-token.repositories";
 import { tokenRepository } from "../repositories/token.repositories";
@@ -9,14 +13,20 @@ import { userRepository } from "../repositories/user.repository";
 import { s3service } from "./s3.service";
 
 class UserService {
-  public async upload(userId: string, user: Partial<IUser>): Promise<IUser> {
-    return await userRepository.update(user, userId);
+  public async upload(
+    userId: string,
+    user: Partial<IUser>,
+  ): Promise<IUserPublicResDto> {
+    const updateUser = await userRepository.update(user, userId);
+    return userPresent.toPublicResDto(updateUser);
   }
-  public async getList(): Promise<IUser[]> {
-    return await userRepository.getList();
+  public async getList(query: IUserQuery): Promise<IUserPublicResDto[]> {
+    const users = await userRepository.getList(query);
+    return userPresent.toPublicResDtoList(users);
   }
-  public async getById(userId: string): Promise<IUser> {
-    return await userRepository.getById(userId);
+  public async getById(userId: string): Promise<IUserPublicResDto> {
+    const user = await userRepository.getById(userId);
+    return userPresent.toPublicResDto(user);
   }
   public async delete(userId: string): Promise<void> {
     await Promise.all([

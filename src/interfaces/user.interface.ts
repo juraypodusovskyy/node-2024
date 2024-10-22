@@ -1,3 +1,4 @@
+import { EOrder, EOrderBy } from "../enums/query-user.enum";
 import { ERole } from "../enums/role.enums";
 import { EStatus } from "../enums/status.enum";
 
@@ -36,4 +37,12 @@ interface ICngPassword {
   newPassword: string;
 }
 
-export type { IUser, ILogUser, ICngPassword, IUserPublicResDto };
+interface IUserQuery {
+  limit?: number;
+  page?: number;
+  order?: EOrder;
+  orderBy?: EOrderBy;
+  search?: string;
+}
+
+export type { IUser, ILogUser, ICngPassword, IUserPublicResDto, IUserQuery };

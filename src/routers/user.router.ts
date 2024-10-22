@@ -10,7 +10,11 @@ import { UserValidator } from "../validators/user.validator";
 
 const router = Router();
 
-router.get("/", usercontrollers.getList);
+router.get(
+  "/",
+  commonMiddleware.isQueryValid(UserValidator.listQuery),
+  usercontrollers.getList,
+);
 router.get(
   "/me",
   authMiddleware.checkToken(ETokenType.ACCESS),

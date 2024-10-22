@@ -3,7 +3,8 @@ import { EStatus } from "../enums/status.enum";
 import { ETokenType } from "../enums/tokens.enum";
 import { ApiError } from "../errors/api-error";
 import { IPayload, ITokenPair } from "../interfaces/token.interface";
-import { IUser } from "../interfaces/user.interface";
+import { IUser, IUserPublicResDto } from "../interfaces/user.interface";
+import { userPresent } from "../presenters/user.presenters";
 import { activeTokenRepository } from "../repositories/active-token.repositories";
 import { tokenRepository } from "../repositories/token.repositories";
 import { userRepository } from "../repositories/user.repository";
@@ -45,7 +46,7 @@ class AuthService {
     return await tokenRepository.create(tokens, userId);
   }
 
-  public async register(user: IUser): Promise<IUser> {
+  public async register(user: IUser): Promise<IUserPublicResDto> {
     const hashPassword = await passwordService.hashPassword(user.password);
     const newUser = await userRepository.create({
       ...user,
@@ -68,7 +69,7 @@ class AuthService {
       actionToken: activeToken,
       name: newUser.name,
     });
-    return newUser;
+    return userPresent.toPublicResDto(newUser);
   }
   public async activate(userId: string): Promise<void> {
     await userRepository.update({ status: EStatus.ACTIVE }, userId);

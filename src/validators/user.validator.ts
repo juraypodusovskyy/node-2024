@@ -1,6 +1,7 @@
 import joi from "joi";
 
 import { regexConstant } from "../constants/regex.constant";
+import { EOrder, EOrderBy } from "../enums/query-user.enum";
 // import { ERole } from "../enums/role.enums";
 // import { EStatus } from "../enums/status.enum";
 
@@ -59,5 +60,13 @@ export class UserValidator {
   public static changePassword = joi.object({
     oldPassword: this.password.required(),
     newPassword: this.password.required(),
+  });
+
+  public static listQuery = joi.object({
+    page: joi.number().min(1).default(1),
+    limit: joi.number().min(1).max(100).default(10),
+    search: joi.string().trim().lowercase(),
+    order: joi.string().valid(...Object.values(EOrder)),
+    orderBy: joi.string().valid(...Object.values(EOrderBy)),
   });
 }

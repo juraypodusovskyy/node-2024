@@ -3,7 +3,7 @@ import { UploadedFile } from "express-fileupload";
 
 import { EFileType } from "../enums/file-item-type.enum";
 import { IPayload } from "../interfaces/token.interface";
-import { IUser } from "../interfaces/user.interface";
+import { IUser, IUserQuery } from "../interfaces/user.interface";
 import { userService } from "../services/user.service";
 
 class UserControllers {
@@ -19,7 +19,8 @@ class UserControllers {
   }
   public async getList(req: Request, res: Response, next: NextFunction) {
     try {
-      const users = await userService.getList();
+      const query = req.query as IUserQuery;
+      const users = await userService.getList(query);
       res.status(200).send(users);
     } catch (e) {
       next(e);

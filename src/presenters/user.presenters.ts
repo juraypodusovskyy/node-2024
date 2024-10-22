@@ -14,6 +14,19 @@ class UserPresent {
       avatar: user.avatar ? configs.AWS_S3_ENDPOINT + user.avatar : user.avatar,
     };
   }
+
+  public toPublicResDtoList(users: IUser[]): IUserPublicResDto[] {
+    return users.map((user) => ({
+      _id: user._id,
+      email: user.email,
+      name: user.name,
+      phone: user.phone,
+      status: user.status,
+      category: user.category,
+      role: user.role,
+      avatar: user.avatar ? configs.AWS_S3_ENDPOINT + user.avatar : user.avatar,
+    }));
+  }
 }
 
 export const userPresent = new UserPresent();
