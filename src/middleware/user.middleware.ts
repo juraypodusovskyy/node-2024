@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
+import { ERole } from "../enums/role.enums";
 import { ApiError } from "../errors/api-error";
+import { IPayload } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
 import { userRepository } from "../repositories/user.repository";
 
@@ -46,6 +48,21 @@ class UserMiddleware {
       next(error);
     }
   };
+
+  public checkRole(role: ERole) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const { role: userRole } = req.res.locals.jwtPayload as IPayload;
+        if (userRole === role || userRole === ERole.ADMIN) {
+          next();
+        } else {
+          throw new ApiError(403, "Access denied: insufficient permissions");
+        }
+      } catch (e) {
+        next(e);
+      }
+    };
+  }
 }
 
 export const userMiddleware = new UserMiddleware();

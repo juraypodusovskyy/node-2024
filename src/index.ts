@@ -7,6 +7,7 @@ import { cronRunner } from "./cron/cron-runner";
 import { ApiError } from "./errors/api-error";
 import { authRouter } from "./routers/auth.router";
 import { passwordRouter } from "./routers/password.router";
+import { productRouter } from "./routers/product.router";
 import { userRouters } from "./routers/user.router";
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
 
 app.use("/users", userRouters);
+app.use("/products", productRouter);
 app.use("/auth", authRouter);
 app.use("/password", passwordRouter);
 
