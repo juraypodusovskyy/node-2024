@@ -16,4 +16,11 @@ export class ProductValidator {
     category: this.category.required(),
     description: this.description,
   });
+
+  public static update = Joi.object({
+    name: this.name,
+    price: this.price,
+    category: this.category,
+    description: this.description,
+  });
 }

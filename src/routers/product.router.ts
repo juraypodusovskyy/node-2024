@@ -30,4 +30,13 @@ router.patch(
   productController.updatePhoto,
 );
 
+router.patch(
+  "/:id",
+  commonMiddleware.isIdValid("id"),
+  commonMiddleware.isBodyValid(ProductValidator.update),
+  authMiddleware.checkToken(ETokenType.ACCESS),
+  productMiddleware.isProductSeller,
+  productController.update,
+);
+
 export const productRouter = router;

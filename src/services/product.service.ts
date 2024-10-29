@@ -13,9 +13,11 @@ class ProductService {
       _userId: payload.userId,
     });
   }
+
   public async getByParams(dto: Partial<IProduct>): Promise<IProduct> {
     return await productRepositories.getByParams(dto);
   }
+
   public async uploadPhoto(
     productId: string,
     photo: UploadedFile,
@@ -26,6 +28,13 @@ class ProductService {
       productId,
     );
     return await productRepositories.update(productId, { photo: filePath });
+  }
+
+  public async upload(
+    productId: string,
+    dto: Partial<IProduct>,
+  ): Promise<IProduct> {
+    return await productRepositories.update(productId, dto);
   }
 }
 

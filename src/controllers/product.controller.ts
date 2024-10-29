@@ -26,6 +26,16 @@ class ProductController {
       next(e);
     }
   }
+  public async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const productId = req.params.id;
+      const body = req.body as IProduct;
+      const product = await productService.upload(productId, body);
+      res.status(201).send(product);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export const productController = new ProductController();
