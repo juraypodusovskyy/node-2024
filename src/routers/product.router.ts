@@ -21,6 +21,10 @@ router.post(
   productController.create,
 );
 
+router.get("/:id", commonMiddleware.isIdValid("id"), productController.getById);
+
+router.get("/", productController.getList);
+
 router.patch(
   "/photo/:id",
   commonMiddleware.isIdValid("id"),
@@ -38,5 +42,11 @@ router.patch(
   productMiddleware.isProductSeller,
   productController.update,
 );
-
+router.delete(
+  "/:id",
+  commonMiddleware.isIdValid("id"),
+  authMiddleware.checkToken(ETokenType.ACCESS),
+  productMiddleware.isProductSeller,
+  productController.delete,
+);
 export const productRouter = router;

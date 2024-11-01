@@ -36,6 +36,10 @@ class ProductService {
   ): Promise<IProduct> {
     return await productRepositories.update(productId, dto);
   }
+
+  public async delete(productId: string): Promise<void> {
+    await productRepositories.delete(productId);
+  }
 }
 
 export const productService = new ProductService();

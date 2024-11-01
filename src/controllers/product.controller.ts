@@ -36,6 +36,32 @@ class ProductController {
       next(e);
     }
   }
+  public async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const productId = req.params.id;
+      await productService.delete(productId);
+      res.sendStatus(204);
+    } catch (e) {
+      next(e);
+    }
+  }
+  public async getById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const productId = req.params.id;
+      const product = await productService.getByParams({ _id: productId });
+      res.status(200).send(product);
+    } catch (e) {
+      next(e);
+    }
+  }
+  public async getList(req: Request, res: Response, next: NextFunction) {
+    try {
+      const products = await productService.getByParams({});
+      res.status(200).send(products);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export const productController = new ProductController();

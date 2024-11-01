@@ -16,6 +16,9 @@ class ProductRepositories {
       new: true,
     });
   }
+  public async delete(productId: string): Promise<void> {
+    await Product.deleteOne({ _id: productId });
+  }
 }
 
 export const productRepositories = new ProductRepositories();
