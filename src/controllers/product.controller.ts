@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { UploadedFile } from "express-fileupload";
 
-import { IProduct } from "../interfaces/product.interface";
+import { IProduct, IProductQuery } from "../interfaces/product.interface";
 import { IPayload } from "../interfaces/token.interface";
 import { productService } from "../services/product.service";
 
@@ -56,8 +56,18 @@ class ProductController {
   }
   public async getList(req: Request, res: Response, next: NextFunction) {
     try {
-      const products = await productService.getByParams({});
+      const query = req.query as IProductQuery;
+      const products = await productService.getList(query);
       res.status(200).send(products);
+    } catch (e) {
+      next(e);
+    }
+  }
+  public async updateViews(req: Request, res: Response, next: NextFunction) {
+    try {
+      const productId = req.params.id;
+      await productService.updateViews(productId);
+      res.sendStatus(204);
     } catch (e) {
       next(e);
     }

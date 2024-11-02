@@ -13,6 +13,12 @@ import { ProductValidator } from "../validators/product.validator";
 
 const router = Router();
 
+router.get(
+  "/",
+  commonMiddleware.isQueryValid(ProductValidator.listQuery),
+  productController.getList,
+);
+
 router.post(
   "/",
   commonMiddleware.isBodyValid(ProductValidator.create),
@@ -23,8 +29,6 @@ router.post(
 
 router.get("/:id", commonMiddleware.isIdValid("id"), productController.getById);
 
-router.get("/", productController.getList);
-
 router.patch(
   "/photo/:id",
   commonMiddleware.isIdValid("id"),
@@ -32,6 +36,12 @@ router.patch(
   authMiddleware.checkToken(ETokenType.ACCESS),
   productMiddleware.isProductSeller,
   productController.updatePhoto,
+);
+
+router.patch(
+  "/views/:id",
+  commonMiddleware.isIdValid("id"),
+  productController.updateViews,
 );
 
 router.patch(

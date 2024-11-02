@@ -11,6 +11,8 @@ const product = new Schema(
     category: { type: String, required: true, enum: EProductCategory },
     description: { type: String, default: null },
     photo: { type: String, default: null },
+    views: { type: Number, default: 0 },
+    weight: { type: Number, require: true },
     _userId: { type: Schema.Types.ObjectId, require: true, ref: User },
   },
   { versionKey: false, timestamps: true },

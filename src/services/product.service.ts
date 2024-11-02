@@ -1,7 +1,7 @@
 import { UploadedFile } from "express-fileupload";
 
 import { EFileType } from "../enums/file-item-type.enum";
-import { IProduct } from "../interfaces/product.interface";
+import { IProduct, IProductQuery } from "../interfaces/product.interface";
 import { IPayload } from "../interfaces/token.interface";
 import { productRepositories } from "../repositories/product.repositories";
 import { s3service } from "./s3.service";
@@ -18,6 +18,9 @@ class ProductService {
     return await productRepositories.getByParams(dto);
   }
 
+  public async getList(query: IProductQuery): Promise<IProduct[]> {
+    return await productRepositories.getList(query);
+  }
   public async uploadPhoto(
     productId: string,
     photo: UploadedFile,
@@ -39,6 +42,15 @@ class ProductService {
 
   public async delete(productId: string): Promise<void> {
     await productRepositories.delete(productId);
+  }
+  public async updateViews(productId: string): Promise<void> {
+    const product = await productRepositories.getByParams({
+      _id: productId,
+    });
+
+    await productRepositories.update(productId, {
+      views: (product[0].views += 1),
+    });
   }
 }
 
