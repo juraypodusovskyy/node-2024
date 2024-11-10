@@ -1,6 +1,7 @@
 import { FilterQuery } from "mongoose";
 
 import { IProduct, IProductQuery } from "../interfaces/product.interface";
+import { IResponse } from "../interfaces/response.interface";
 import { Product } from "../models/product.model";
 
 class ProductRepositories {
@@ -10,7 +11,7 @@ class ProductRepositories {
   public async getByParams(dto: Partial<IProduct>): Promise<IProduct> {
     return (await Product.find(dto)) as unknown as IProduct;
   }
-  public async getList(query: IProductQuery): Promise<IProduct[]> {
+  public async getList(query: IProductQuery): Promise<IResponse<IProduct[]>> {
     const filterObj: FilterQuery<IProduct> = {};
 
     if (query.category) {
@@ -28,10 +29,22 @@ class ProductRepositories {
         ? { [query.orderBy]: query.order === "asc" ? 1 : -1 }
         : { views: -1 };
 
-    return await Product.find(filterObj)
+    const count = await Product.countDocuments(filterObj);
+
+    const product = await Product.find(filterObj)
       .limit(query.limit)
       .skip(skip)
       .sort(sort);
+
+    const data = {
+      count,
+      page: query?.page || 1,
+      limit: query?.limit || 10,
+      totalPage: Math.ceil(count / query.limit),
+      data: product,
+    };
+
+    return data;
   }
   public async update(
     productId: string,

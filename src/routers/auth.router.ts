@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { authControler } from "../controllers/auth.controller";
+import { authController } from "../controllers/auth.controller";
 import { ETokenType } from "../enums/tokens.enum";
 import { authMiddleware } from "../middleware/auth.middleware";
 import { commonMiddleware } from "../middleware/common.middleware";
@@ -12,33 +12,33 @@ const router = Router();
 router.post(
   "/login",
   commonMiddleware.isBodyValid(UserValidator.login),
-  authControler.login,
+  authController.login,
 );
 
 router.post(
   "/register",
   commonMiddleware.isBodyValid(UserValidator.create),
   userMiddleware.isEmailExistOrThrow,
-  authControler.register,
+  authController.register,
 );
 
 router.post(
   "/refresh",
   authMiddleware.checkToken(ETokenType.REFRESH),
-  authControler.refresh,
+  authController.refresh,
 );
 
 router.post(
   "/logout",
   authMiddleware.checkToken(ETokenType.ACCESS),
-  authControler.logout,
+  authController.logout,
 );
 
 router.patch(
   "/activate",
   commonMiddleware.isBodyValid(UserValidator.isActiveTokenValid),
   authMiddleware.checkActiveToken(ETokenType.ACTIVATE),
-  authControler.activate,
+  authController.activate,
 );
 
 export const authRouter = router;

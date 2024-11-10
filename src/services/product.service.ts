@@ -2,6 +2,7 @@ import { UploadedFile } from "express-fileupload";
 
 import { EFileType } from "../enums/file-item-type.enum";
 import { IProduct, IProductQuery } from "../interfaces/product.interface";
+import { IResponse } from "../interfaces/response.interface";
 import { IPayload } from "../interfaces/token.interface";
 import { productRepositories } from "../repositories/product.repositories";
 import { s3service } from "./s3.service";
@@ -18,7 +19,7 @@ class ProductService {
     return await productRepositories.getByParams(dto);
   }
 
-  public async getList(query: IProductQuery): Promise<IProduct[]> {
+  public async getList(query: IProductQuery): Promise<IResponse<IProduct[]>> {
     return await productRepositories.getList(query);
   }
   public async uploadPhoto(

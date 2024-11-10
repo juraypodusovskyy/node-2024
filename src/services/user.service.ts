@@ -31,7 +31,7 @@ class UserService {
   public async delete(userId: string): Promise<void> {
     await Promise.all([
       userRepository.delete(userId),
-      tokenRepository.delte({ _userId: userId }),
+      tokenRepository.delete({ _userId: userId }),
       activeTokenRepository.delete(userId),
     ]);
   }

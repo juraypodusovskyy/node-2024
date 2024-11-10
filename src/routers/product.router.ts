@@ -6,7 +6,7 @@ import { ERole } from "../enums/role.enums";
 import { ETokenType } from "../enums/tokens.enum";
 import { authMiddleware } from "../middleware/auth.middleware";
 import { commonMiddleware } from "../middleware/common.middleware";
-import { filemiddleware } from "../middleware/file.middleware";
+import { fileMiddleware } from "../middleware/file.middleware";
 import { productMiddleware } from "../middleware/product.middleware";
 import { userMiddleware } from "../middleware/user.middleware";
 import { ProductValidator } from "../validators/product.validator";
@@ -32,7 +32,7 @@ router.get("/:id", commonMiddleware.isIdValid("id"), productController.getById);
 router.patch(
   "/photo/:id",
   commonMiddleware.isIdValid("id"),
-  filemiddleware.isFileValid(EFileType.PRODUCTS),
+  fileMiddleware.isFileValid(EFileType.PRODUCTS),
   authMiddleware.checkToken(ETokenType.ACCESS),
   productMiddleware.isProductSeller,
   productController.updatePhoto,

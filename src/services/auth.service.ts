@@ -41,7 +41,7 @@ class AuthService {
   }
 
   public async refresh({ role, userId }: IPayload): Promise<ITokenPair> {
-    await tokenRepository.delte({ _userId: userId });
+    await tokenRepository.delete({ _userId: userId });
     const tokens = tokenService.generateTokens({ role, userId });
     return await tokenRepository.create(tokens, userId);
   }
@@ -77,7 +77,7 @@ class AuthService {
   }
 
   public async logout({ userId }: IPayload): Promise<void> {
-    await tokenRepository.delte({ _userId: userId });
+    await tokenRepository.delete({ _userId: userId });
   }
 }
 

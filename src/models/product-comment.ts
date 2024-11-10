@@ -13,4 +13,4 @@ const productComment = new Schema(
   { versionKey: false, timestamps: true },
 );
 
-export const comments = model<IProductComment>("comments", productComment);
+export const Comments = model<IProductComment>("comments", productComment);

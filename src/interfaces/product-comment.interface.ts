@@ -7,4 +7,10 @@ interface IProductComment {
   updatedAt?: Date;
 }
 
-export type { IProductComment };
+interface ICommentQuery {
+  page?: number;
+  limit?: number;
+  rating?: number;
+}
+
+export type { IProductComment, ICommentQuery };

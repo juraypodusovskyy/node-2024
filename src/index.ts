@@ -6,6 +6,7 @@ import { configs } from "./configs/configs";
 import { cronRunner } from "./cron/cron-runner";
 import { ApiError } from "./errors/api-error";
 import { authRouter } from "./routers/auth.router";
+import { commentRouter } from "./routers/comment.router";
 import { passwordRouter } from "./routers/password.router";
 import { productRouter } from "./routers/product.router";
 import { userRouters } from "./routers/user.router";
@@ -20,6 +21,7 @@ app.use("/users", userRouters);
 app.use("/products", productRouter);
 app.use("/auth", authRouter);
 app.use("/password", passwordRouter);
+app.use("/comments", commentRouter);
 
 app.use(
   "*",

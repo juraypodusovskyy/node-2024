@@ -4,7 +4,7 @@ import { UploadedFile } from "express-fileupload";
 import { EFileType } from "../enums/file-item-type.enum";
 import { ApiError } from "../errors/api-error";
 
-class Filemiddleware {
+class FileMiddleware {
   public isImage = (file: UploadedFile): boolean => {
     const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif"];
     return allowedMimeTypes.includes(file.mimetype);
@@ -35,4 +35,4 @@ class Filemiddleware {
   };
 }
 
-export const filemiddleware = new Filemiddleware();
+export const fileMiddleware = new FileMiddleware();

@@ -12,7 +12,7 @@ class TokenRepository {
     })) as unknown as IToken;
     return { accessToken, refreshToken };
   }
-  public async delte(params: Partial<IToken>): Promise<void> {
+  public async delete(params: Partial<IToken>): Promise<void> {
     await Token.deleteMany(params);
   }
   public async getByParams(params: Partial<IToken>): Promise<IToken> {

@@ -41,7 +41,7 @@ class PasswordService {
     await Promise.all([
       userRepository.update({ password }, userId),
       activeTokenRepository.delete(userId),
-      tokenRepository.delte({ _userId: userId }),
+      tokenRepository.delete({ _userId: userId }),
     ]);
   };
 
@@ -57,7 +57,7 @@ class PasswordService {
     const hashPassword = await this.hashPassword(newPassword);
     await Promise.all([
       userRepository.update({ password: hashPassword }, userId),
-      tokenRepository.delte({ _userId: userId }),
+      tokenRepository.delete({ _userId: userId }),
       activeTokenRepository.delete(userId),
     ]);
   };
