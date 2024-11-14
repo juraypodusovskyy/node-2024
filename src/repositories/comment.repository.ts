@@ -21,9 +21,12 @@ class CommentRepository {
     const page = query.page || 1;
     const limit = query.limit || 10;
     const skip = limit * (page - 1);
-    const sort: { [key: string]: 1 | -1 } = query.rating
-      ? { rating: -1 }
-      : { createdAt: -1 };
+
+    const sort: { [key: string]: 1 | -1 } =
+      query?.orderBy && query.order
+        ? { [query.orderBy]: query.order === "asc" ? 1 : -1 }
+        : { createdAt: -1 };
+
     const count = await Comments.countDocuments({ _productId: productId });
     const comments = await Comments.find({ _productId: productId })
       .skip(skip)

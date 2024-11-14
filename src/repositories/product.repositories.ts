@@ -11,6 +11,9 @@ class ProductRepositories {
   public async getByParams(dto: Partial<IProduct>): Promise<IProduct> {
     return (await Product.find(dto)) as unknown as IProduct;
   }
+  public async getById(productId: string): Promise<IProduct> {
+    return await Product.findById(productId);
+  }
   public async getList(query: IProductQuery): Promise<IResponse<IProduct[]>> {
     const filterObj: FilterQuery<IProduct> = {};
 

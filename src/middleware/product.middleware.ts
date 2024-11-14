@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { ERole } from "../enums/role.enums";
 import { ApiError } from "../errors/api-error";
 import { IPayload } from "../interfaces/token.interface";
+import { productRepositories } from "../repositories/product.repositories";
 import { productService } from "../services/product.service";
 
 class ProductMiddleware {
@@ -27,6 +28,23 @@ class ProductMiddleware {
         new ApiError(403, "Access denied: not the product seller");
       }
 
+      next();
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async isProductExistsOrThrow(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const productId = req.params.productId;
+      const product = await productRepositories.getById(productId);
+      if (!product) {
+        throw new ApiError(404, "Product not found");
+      }
       next();
     } catch (e) {
       next(e);

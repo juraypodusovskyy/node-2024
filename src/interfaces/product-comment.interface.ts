@@ -1,3 +1,6 @@
+import { EOrderByComment } from "../enums/comment.enum";
+import { EOrder } from "../enums/query-user.enum";
+
 interface IProductComment {
   comment: string;
   userName: string;
@@ -10,7 +13,8 @@ interface IProductComment {
 interface ICommentQuery {
   page?: number;
   limit?: number;
-  rating?: number;
+  order?: EOrder;
+  orderBy?: EOrderByComment;
 }
 
 export type { IProductComment, ICommentQuery };

@@ -4,7 +4,7 @@ import { IPayload } from "../interfaces/token.interface";
 import { ICngPassword, IUser } from "../interfaces/user.interface";
 import { passwordService } from "../services/password.service";
 
-class Passwordcontroller {
+class PasswordController {
   public async forgotPasswordSendEmail(
     req: Request,
     res: Response,
@@ -40,4 +40,4 @@ class Passwordcontroller {
   }
 }
 
-export const passwordcontroller = new Passwordcontroller();
+export const passwordController = new PasswordController();

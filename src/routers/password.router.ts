@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { passwordcontroller } from "../controllers/password.controller";
+import { passwordController } from "../controllers/password.controller";
 import { ETokenType } from "../enums/tokens.enum";
 import { authMiddleware } from "../middleware/auth.middleware";
 import { commonMiddleware } from "../middleware/common.middleware";
@@ -13,21 +13,21 @@ router.post(
   "/forgot-password",
   commonMiddleware.isBodyValid(UserValidator.isEmailValid),
   userMiddleware.isEmailExist,
-  passwordcontroller.forgotPasswordSendEmail,
+  passwordController.forgotPasswordSendEmail,
 );
 
 router.patch(
   "/forgot-password",
   commonMiddleware.isBodyValid(UserValidator.forgot),
   authMiddleware.checkActiveToken(ETokenType.FORGOT),
-  passwordcontroller.forgotPassword,
+  passwordController.forgotPassword,
 );
 
 router.patch(
   "/change-password",
   authMiddleware.checkToken(ETokenType.ACCESS),
   commonMiddleware.isBodyValid(UserValidator.changePassword),
-  passwordcontroller.changePassword,
+  passwordController.changePassword,
 );
 
 export const passwordRouter = router;
