@@ -13,6 +13,7 @@ const product = new Schema(
     photo: { type: String, default: null },
     views: { type: Number, default: 0 },
     weight: { type: Number, require: true },
+    rating: { type: Number, default: 0 },
     _userId: { type: Schema.Types.ObjectId, require: true, ref: User },
   },
   { versionKey: false, timestamps: true },

@@ -7,10 +7,11 @@ interface IProduct {
   name: string;
   price: number;
   category: string;
-  weight: number;
+  weight?: number;
   description?: string;
   photo?: string;
   views?: number;
+  rating?: number;
 }
 
 interface IProductQuery {

@@ -53,7 +53,6 @@ class UserMiddleware {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { role: userRole } = req.res.locals.jwtPayload as IPayload;
-        console.log(userRole);
         if (userRole === role || userRole === ERole.ADMIN) {
           next();
         } else {

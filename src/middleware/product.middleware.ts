@@ -45,6 +45,7 @@ class ProductMiddleware {
       if (!product) {
         throw new ApiError(404, "Product not found");
       }
+      req.res.locals.product = product;
       next();
     } catch (e) {
       next(e);

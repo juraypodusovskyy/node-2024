@@ -9,6 +9,7 @@ import { authRouter } from "./routers/auth.router";
 import { commentRouter } from "./routers/comment.router";
 import { passwordRouter } from "./routers/password.router";
 import { productRouter } from "./routers/product.router";
+import { purchaseRouter } from "./routers/purchase.router";
 import { userRouters } from "./routers/user.router";
 
 const app = express();
@@ -22,6 +23,7 @@ app.use("/products", productRouter);
 app.use("/auth", authRouter);
 app.use("/password", passwordRouter);
 app.use("/comments", commentRouter);
+app.use("/purchases", purchaseRouter);
 
 app.use(
   "*",
