@@ -1,3 +1,5 @@
+import { EPurchaseOrderBy, EPurchaseStatus } from "../enums/purchase.enum";
+import { EOrder } from "../enums/query-user.enum";
 import { IProduct } from "./product.interface";
 
 interface IPurchase {
@@ -9,4 +11,12 @@ interface IPurchase {
   status?: string;
 }
 
-export type { IPurchase };
+interface IQueryPurchase {
+  limit?: number;
+  page?: number;
+  order?: EOrder;
+  orderBy?: EPurchaseOrderBy;
+  status?: EPurchaseStatus;
+}
+
+export type { IPurchase, IQueryPurchase };

@@ -26,8 +26,24 @@ router.get(
 
 router.get(
   "/",
+  commonMiddleware.isQueryValid(PurchaseValidator.listQuery),
   authMiddleware.checkToken(ETokenType.ACCESS),
   userMiddleware.checkRole(ERole.ADMIN),
   purchaseController.getList,
+);
+
+router.delete(
+  "/:id",
+  commonMiddleware.isIdValid("id"),
+  authMiddleware.checkToken(ETokenType.ACCESS),
+  purchaseController.delete,
+);
+
+router.patch(
+  "/:id",
+  commonMiddleware.isIdValid("id"),
+  commonMiddleware.isBodyValid(PurchaseValidator.update),
+  authMiddleware.checkToken(ETokenType.ACCESS),
+  purchaseController.updateStatus,
 );
 export const purchaseRouter = router;

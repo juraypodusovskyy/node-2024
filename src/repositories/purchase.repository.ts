@@ -1,6 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 
-import { IPurchase } from "../interfaces/purchase.interface";
+import { EPurchaseStatus } from "../enums/purchase.enum";
+import { IPurchase, IQueryPurchase } from "../interfaces/purchase.interface";
+import { IResponse } from "../interfaces/response.interface";
 import { Purchase } from "../models/purchase.model";
 
 class PurchaseRepository {
@@ -59,8 +61,49 @@ class PurchaseRepository {
     return purchase;
   }
 
-  public async getList(): Promise<IPurchase[]> {
-    return await Purchase.find();
+  public async getList(query: IQueryPurchase): Promise<IResponse<IPurchase[]>> {
+    const filterObj: FilterQuery<IPurchase> = {};
+
+    if (query?.status) {
+      filterObj.status = query.status;
+    } else {
+      filterObj.status = EPurchaseStatus.PENDING;
+    }
+
+    const skip = query.limit * (query.page - 1);
+
+    const sort: { [key: string]: 1 | -1 } =
+      query?.orderBy && query.order
+        ? { [query.orderBy]: query.order === "asc" ? 1 : -1 }
+        : { purchaseDate: -1 };
+
+    const count = await Purchase.countDocuments(filterObj);
+
+    const purchase = await Purchase.find(filterObj)
+      .skip(skip)
+      .limit(query.limit)
+      .sort(sort);
+
+    const data = {
+      count,
+      page: query?.page || 1,
+      limit: query?.limit || 10,
+      totalPage: Math.ceil(count / query.limit),
+      data: purchase,
+    };
+
+    return data;
+  }
+
+  public async deleteById(id: string): Promise<void> {
+    await Purchase.deleteOne({ _id: id });
+  }
+
+  public async updateStatus(
+    id: string,
+    status: EPurchaseStatus,
+  ): Promise<IPurchase> {
+    return await Purchase.findByIdAndUpdate(id, { status }, { new: true });
   }
 }
 

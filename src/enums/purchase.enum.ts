@@ -4,3 +4,8 @@ export enum EPurchaseStatus {
   COMPLETED = "completed",
   CANCELLED = "cancelled",
 }
+
+export enum EPurchaseOrderBy {
+  TOTAL_AMOUNT = "totalAmount",
+  PURCHASE_DATE = "purchaseDate",
+}

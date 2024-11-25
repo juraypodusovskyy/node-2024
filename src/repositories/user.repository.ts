@@ -49,14 +49,14 @@ class UserRepository {
         {
           $unwind: {
             path: "$tokens",
-            preserveNullAndEmptyArrays: true, // зберігаємо користувачів без токенів
+            preserveNullAndEmptyArrays: true,
           },
         },
         {
           $match: {
             $or: [
-              { tokens: { $exists: false } }, // Користувачі без токенів
-              { "tokens.createdAt": { $lt: lastLoginDate } }, // Користувачі, що не заходили після певної дати
+              { tokens: { $exists: false } },
+              { "tokens.createdAt": { $lt: lastLoginDate } },
             ],
           },
         },
